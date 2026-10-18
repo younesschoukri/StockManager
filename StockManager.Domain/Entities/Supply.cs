@@ -6,7 +6,7 @@ namespace StockManager.Domain.Entities
     {
         public Guid Id { get; set; }
         public decimal Total { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime AddingDate { get; set; }
         public string? InvoiceImage { get; set; }
         public PaymentMethod? Payment { get; set; }
         public OrderStatus Status { get; set; }

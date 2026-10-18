@@ -8,7 +8,7 @@ namespace StockManager.Domain.Entities
         public string OwnerName { get; set; } = null!;
         public string? BankName { get; set; }
         public decimal Amount { get; set; }
-        public DateTime IssuedDate { get; set; }
+        public DateTime IssuingDate { get; set; }
         public DateTime? DueDate { get; set; }
         public string? Image { get; set; }
         public BankCheckStatus Status { get; set; }

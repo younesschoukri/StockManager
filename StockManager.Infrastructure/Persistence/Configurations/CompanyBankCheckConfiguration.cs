@@ -64,6 +64,16 @@ namespace StockManager.Infrastructure.Persistence.Configurations
 
             #endregion
 
+            #region IssuingDate
+
+            // IssuingDate configuration
+            builder
+                .Property(companyBankCheck => companyBankCheck.IssuingDate)
+                .IsRequired()
+                .HasDefaultValueSql("GETUTCDATE()");
+
+            #endregion
+
             #region DueDate
 
             // Configure the due date

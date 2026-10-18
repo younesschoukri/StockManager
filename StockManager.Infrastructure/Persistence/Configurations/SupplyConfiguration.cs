@@ -41,7 +41,7 @@ namespace StockManager.Infrastructure.Persistence.Configurations
 
             // Configure the supply date
             // Use the database UTC time when no date is supplied.
-            builder.Property(supply => supply.Date)
+            builder.Property(supply => supply.AddingDate)
                 .IsRequired()
                 .HasDefaultValueSql("GETUTCDATE()");
 

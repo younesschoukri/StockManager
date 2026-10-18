@@ -5,7 +5,7 @@ namespace StockManager.Domain.Entities
     public class Order
     {
         public Guid Id { get; set; }
-        public DateTime CreationDate { get; }
+        public DateTime AddingDate { get; }
         public OrderStatus Status { get; set; }
         public string? Note { get; set; }
         public Customer Customer { get; set; } = null!;

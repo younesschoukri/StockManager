@@ -28,7 +28,7 @@ namespace StockManager.Infrastructure.Persistence.Configurations
 
             // AddedDate configuration
             builder
-                .Property(details => details.AddedDate)
+                .Property(details => details.AddingDate)
                 .IsRequired()
                 .HasDefaultValueSql("GETUTCDATE()");
 

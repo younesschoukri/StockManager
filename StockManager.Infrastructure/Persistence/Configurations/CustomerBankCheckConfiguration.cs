@@ -64,7 +64,7 @@ namespace StockManager.Infrastructure.Persistence.Configurations
 
             // IssuedDate configuration
             builder
-                .Property(check => check.IssuedDate)
+                .Property(check => check.IssuingDate)
                 .IsRequired();
 
             #endregion

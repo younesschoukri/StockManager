@@ -30,11 +30,11 @@ namespace StockManager.Infrastructure.Persistence.Configurations
 
             #endregion
 
-            #region CreationOrder
+            #region AddingDate
 
-            // CreateDate configuration
+            // AddingDate configuration
             builder
-                .Property(order => order.CreationDate)
+                .Property(order => order.AddingDate)
                 .IsRequired()
                 .HasDefaultValueSql("GETUTCDATE()");
 
@@ -64,7 +64,7 @@ namespace StockManager.Infrastructure.Persistence.Configurations
 
             #region Relationships
 
-            // Order -> Customer:
+            // Order -> Customer (Many-to-One)
             // Customer can have many Orders, but an Order must have one Customer.
             // Deleting a Customer will not delete their Orders (Restrict).
             builder
@@ -73,7 +73,7 @@ namespace StockManager.Infrastructure.Persistence.Configurations
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Order -> OrderDetails:
+            // Order -> OrderDetails (One-to-Many)
             // An order can have many OrderDetails, but an OrderDetail must belong to one Order.
             // Deleting an Order will not delete its OrderDetails (Restrict).
             builder
@@ -82,7 +82,7 @@ namespace StockManager.Infrastructure.Persistence.Configurations
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Order -> Deposits:
+            // Order -> Deposits (One-to-Many)
             // An order can have many Deposits, but a Deposit must belong to one Order.
             // Deleting an Order will not delete its Deposits (Restrict).
             builder

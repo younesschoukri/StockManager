@@ -1,9 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using StockManager.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace StockManager.Infrastructure.Persistence
 {
     public class StockManagerDbContext : DbContext
     {
+        #region DbSets
+
         public DbSet<Customer> Customers { get; set; } = null!;
         public DbSet<CustomerInformation> CustomersInformation { get; set; } = null!;
         public DbSet<CustomerBankCheck> CustomersBankChecks { get; set; } = null!;
@@ -20,14 +23,21 @@ namespace StockManager.Infrastructure.Persistence
         public DbSet<Supplier> Suppliers { get; set; } = null!;
         public DbSet<SupplierInformation> SuppliersInformation { get; set; } = null!;
 
+        #endregion
+
+        #region Protected Methods
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-
+            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=StockManagerDb;Trusted_Connection=True;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Register all entity configurations from the assembly containing the DbContext
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(StockManagerDbContext).Assembly);
         }
+
+        #endregion
     }
 }
