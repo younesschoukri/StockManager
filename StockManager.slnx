@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/src/">
     <Project Path="StockManager.Domain/StockManager.Domain.csproj" />
+    <Project Path="StockManager.Infrastructure/StockManager.Infrastructure.csproj" />
   </Folder>
 </Solution>
