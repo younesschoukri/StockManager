@@ -17,31 +17,6 @@ namespace StockManager.Infrastructure
 
             #endregion
 
-            #region Register Repositories
-
-            services.AddScoped<ICustomerRepository, CustomerRepository>();
-            services.AddScoped<ICustomerInformationRepository, CustomerInformationRepository>();
-            services.AddScoped<ICustomerBankCheckRepository, CustomerBankCheckRepository>();
-
-            services.AddScoped<IOrderRepository, OrderRepository>();
-            services.AddScoped<IOrderDetailsRepository, OrderDetailsRepository>();
-
-            services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<IProductDefinitionRepository, ProductDefinitionRepository>();
-            services.AddScoped<IProductSpecificationRepository, ProductSpecificationRepository>();
-
-            services.AddScoped<ICategoryRepository, CategoryRepository>();
-            services.AddScoped<ISubCategoryRepository, SubCategoryRepository>();
-
-            services.AddScoped<ISupplierRepository, SupplierRepository>();
-            services.AddScoped<ISupplierInformationRepository, SupplierInformationRepository>();
-            services.AddScoped<ISupplyRepository, SupplyRepository>();
-
-            services.AddScoped<ICompanyBankCheckRepository, CompanyBankCheckRepository>();
-            services.AddScoped<IDepositRepository, DepositRepository>();
-
-            #endregion
-
             #region Register UnitOfWork
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
