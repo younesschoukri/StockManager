@@ -25,12 +25,16 @@ namespace StockManager.Infrastructure.Persistence
 
         #endregion
 
-        #region Protected Methods
+        #region Public Constructor
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public StockManagerDbContext(DbContextOptions<StockManagerDbContext> options)
+            : base(options)
         {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=StockManagerDb;Trusted_Connection=True;");
         }
+
+        #endregion
+
+        #region Protected Method
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
