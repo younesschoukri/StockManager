@@ -55,13 +55,14 @@ namespace StockManager.Infrastructure.Persistence.Configurations
 
             #region Relationship
 
-            // CustomerInformation -> Customer:
+            // CustomerInformation -> Customer (Many-to-One)
             // A CustmerInformation belongs to one customer, and a customer can have many CustomerInformation.
             builder
-                .HasOne(customerInformation => customerInformation.Customer)
-                .WithMany(customer => customer.CustomerInformation)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasOne(customerInformation => customerInformation.Customer) // CustomerInformation.HasOne(Customer)
+                .WithMany(customer => customer.CustomerInformation)          // Customer.HasMany(CustomerInformation)
+                .HasForeignKey("CustomerId")                                 // CustomerInformation.HasForeignKey("CustomerId").IsRequired()
+                .IsRequired()                                                // FK is required because a CustomerInformation must be associated with a Customer.
+                .OnDelete(DeleteBehavior.Restrict);                          // Restrict deletion of a customer if there are associated CustomerInformation records.
 
             #endregion
         }

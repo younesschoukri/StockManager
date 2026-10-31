@@ -59,13 +59,14 @@ namespace StockManager.Infrastructure.Persistence.Configurations
 
             #region Relationship
 
-            // Category -> SubCategories
+            // Category -> SubCategories (One-to-Many)
             // A category can have multiple subcategories, a subcategory must belong to one category.
             builder
-                .HasMany(category => category.SubCategories)
-                .WithOne(subCategory => subCategory.Category)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasMany(category => category.SubCategories)  // Category.HasMany(SubCategories)
+                .WithOne(subCategory => subCategory.Category) // SubCategory.HasOne(Category)
+                .HasForeignKey("CategoryId")                  // SubCategory.HasForeignKey("CategoryId")
+                .IsRequired()                                 // FK is required because SubCategory must be associated with one Category.
+                .OnDelete(DeleteBehavior.Restrict);           // Restrict deletion of Category if it has associated SubCategories.
 
             #endregion
         }

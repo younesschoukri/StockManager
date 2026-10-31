@@ -102,14 +102,14 @@ namespace StockManager.Infrastructure.Persistence.Configurations
 
             #region Relationships
 
-            // CustomerBankCheck -> Deposit
+            // CustomerBankCheck -> Deposit (One-to-One)
             // Every customer bank check must belong to exactly one deposit.
             builder
-                .HasOne(check => check.Deposit)
-                .WithOne(deposit => deposit.Check)
-                .HasForeignKey<CustomerBankCheck>()
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasOne(check => check.Deposit)                // CustomerBankCheck.HasOne(Deposit)
+                .WithOne(deposit => deposit.Check)             // Deposit.HasOne(CustomerBankCheck)
+                .HasForeignKey<CustomerBankCheck>("DepositId") // CustomerBankCheck.HasForeignKey("DepositId)
+                .IsRequired()                                  // FK is required because a CustomerBankCheck must be associated with a Deposit.
+                .OnDelete(DeleteBehavior.Restrict);            // Restrict deletion of a Deposit it has associated CustomerBankCheck.
 
             #endregion
         }

@@ -61,21 +61,23 @@ namespace StockManager.Infrastructure.Persistence.Configurations
 
             #region Relationships
 
-            // SubCategory -> Category
+            // SubCategory -> Category (Many-to-One)
             // A category can have multiple subcategories, but each subcategory must belong to one category.
             builder
-                .HasOne(subCategory => subCategory.Category)
-                .WithMany(category => category.SubCategories)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasOne(subCategory => subCategory.Category)  // SubCategory.HasOne(Category)
+                .WithMany(category => category.SubCategories) // Category.HasMany(SubCategories)
+                .HasForeignKey("CategoryId")                  // SubCategory.HasForeignKey("CategoryId").IsRequired()
+                .IsRequired()                                 // FK is required because a SubCategory must be associated with a Category 
+                .OnDelete(DeleteBehavior.Restrict);           // Restrict deletion of Category if it has associated SubCategories.
 
-            // SubCategory -> ProductDefinitions
+            // SubCategory -> ProductDefinitions (One-to-Many).
             // A subcategory can have multiple product definitions, but a product definition must belong to one subcategory.
             builder
-                .HasMany(subCategory => subCategory.ProductDefinitions)
-                .WithOne(definition => definition.SubCategory)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasMany(subCategory => subCategory.ProductDefinitions) // SubCategory.HasMany(ProductDefinitions)
+                .WithOne(definition => definition.SubCategory)          // ProductDefinition.HasOne(SubCategory)
+                .HasForeignKey("SubCategoryId")                         // ProductDefinition.HasForeignKey("SubCategoryId").IsRequired()
+                .IsRequired()                                           // FK is required because a ProductDefinition must be associated with a SubCategory.
+                .OnDelete(DeleteBehavior.Restrict);                     // Restrict deletion of a SubCategory if it has associated ProductDefinitions.
 
             #endregion
         }

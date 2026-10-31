@@ -74,22 +74,23 @@ namespace StockManager.Infrastructure.Persistence.Configurations
 
             #region Relationships
 
-            // Deposit -> Order
+            // Deposit -> Order (Many-to-One)
             // An order can have many deposits, but a deposit belongs to only one order.
             builder
-                .HasOne(deposit => deposit.Order)
-                .WithMany(order => order.Deposits)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasOne(deposit => deposit.Order)   // Deposit.HasOne(Order)
+                .WithMany(order => order.Deposits)  // Order.WithMany(Deposits)
+                .HasForeignKey("OrderId")           // Deposit.HasForeignKey("OrderId").IsRequired()
+                .IsRequired()                       // FK is required because a deposit must be associated with an order.
+                .OnDelete(DeleteBehavior.Restrict); // Restrict deletion of an order if it has associated deposits.
 
-            // Deposit -> CustomerBankCheck
+            // Deposit -> CustomerBankCheck (One-to-One)
             // Deposit may or may not have a customer bank check, but a customer bank check must belong to a deposit.
             builder
-                .HasOne(deposit => deposit.Check)
-                .WithOne(check => check.Deposit)
-                .HasForeignKey<CustomerBankCheck>()
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasOne(deposit => deposit.Check)              // Deposit.HasOne(CustomerBankCheck)
+                .WithOne(check => check.Deposit)               // CustomerBankCheck.WithOne(Deposit)
+                .HasForeignKey<CustomerBankCheck>("DepositId") // CustomerBankCheck.HasForeignKey("DepositId").IsRequired()
+                .IsRequired()                                  // FK is required because a customer bank check must be associated with a deposit.
+                .OnDelete(DeleteBehavior.Restrict);            // Restrict deletion of a deposit if it has an associated customer bank check.
 
             #endregion
         }

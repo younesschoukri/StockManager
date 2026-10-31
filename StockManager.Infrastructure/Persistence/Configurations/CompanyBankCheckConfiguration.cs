@@ -99,11 +99,13 @@ namespace StockManager.Infrastructure.Persistence.Configurations
 
             // CompanyBankCheck -> Supply (Many-to-One)
             // A supply can have multiple company bank checks, a company bank check must belong to exactly one supply.
-            builder.HasOne(check => check.Supply)
-                .WithMany(supply => supply.CompanyBankChecks)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
-
+            builder
+                .HasOne(check => check.Supply)                // CompanyBankCheck.HasOne(Supply)
+                .WithMany(supply => supply.CompanyBankChecks) // Supply.HasMany(CompanyBankChecks)
+                .HasForeignKey("SupplyId")                    // CompanyBankCheck.HasForeignKey("SupplyId")
+                .IsRequired()                                 // FK is required because a CompanyBankCheck must associated with a Supply.
+                .OnDelete(DeleteBehavior.Restrict);           // Restrict deletion of a Supply if it has associated CompanyBankChecks.
+                                                              
             #endregion
         }
     }

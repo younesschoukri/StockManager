@@ -65,19 +65,23 @@ namespace StockManager.Infrastructure.Persistence.Configurations
 
             #region Relationships
 
-            // Customer -> Orders:
-            // One customer can have many orders, and each order belongs to one customer.
+            // Customer -> Orders (One-to-Many)
+            // One customer can have many orders, and each order must belong to one customer.
             builder
-                .HasMany(customer => customer.Orders)
-                .WithOne(order => order.Customer)
-                .IsRequired();
+                .HasMany(customer => customer.Orders) // Customer.HasMany(Orders)
+                .WithOne(order => order.Customer)     // Order.HasOne(Customer)
+                .HasForeignKey("CustomerId")          // Order.HasForeignKey("CustomerId").IsRequired()
+                .IsRequired()                         // FK is required because an Order must be associated with a Customer.
+                .OnDelete(DeleteBehavior.Restrict);   // Restrict deletion of Customer if it has associated Orders.
 
-            // Customer -> CustomerInformation:
-            // One customer can have many customer information entries, and each customer information entry belongs to one customer.
+            // Customer -> CustomerInformation (One-to-Many)
+            // One customer can have many customer information records, and each customer information record must belong to one customer.
             builder
-                .HasMany(customer => customer.CustomerInformation)
-                .WithOne(customerInformation => customerInformation.Customer)
-                .IsRequired();
+                .HasMany(customer => customer.CustomerInformation)            // Customer.HasMany(CustomerInformation)
+                .WithOne(customerInformation => customerInformation.Customer) // CustomerInformation.HasOne(Customer)
+                .HasForeignKey("CustomerId")                                  // CustomerInformation.HasForeignKey("CustomerId").IsRequired()
+                .IsRequired()                                                 // FK is required because a CustomerInformation must be associated with a Customer.
+                .OnDelete(DeleteBehavior.Restrict);                           // Restrict deletion of Customer if it has associated CustomerInformation records.
 
             #endregion
         }

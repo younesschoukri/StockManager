@@ -133,29 +133,32 @@ namespace StockManager.Infrastructure.Persistence.Configurations
 
             #region Relationships
 
-            // Product -> Supply
+            // Product -> Supply (Many-to-One)
             // A supply can have many products, but a product belongs to one supply.
             builder
-                .HasOne(product => product.Supply)
-                .WithMany(supply => supply.Products)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasOne(product => product.Supply)   // Product.HasOne(Supply)
+                .WithMany(supply => supply.Products) // Supply.HasMany(Product)
+                .HasForeignKey("SupplyId")           // Product.HasForeignKey("SupplyId").IsRequired()
+                .IsRequired()                        // FK is required because a product must be associated with a supply.
+                .OnDelete(DeleteBehavior.Restrict);  // Restrict deletion of a Supply if it has associated Products.
 
-            // Product -> ProductDefinition
+            // Product -> ProductDefinition (Many-to-One)
             // A product definition can describe many products, but each product has only one product definition.
             builder
-                .HasOne(product => product.ProductDefinition)
-                .WithMany(definition => definition.Products)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasOne(product => product.ProductDefinition) // Product.HasOne(ProductDefinition)
+                .WithMany(definition => definition.Products)  // ProductDefinition.HasMany(Product)
+                .HasForeignKey("ProductDefinitionId")         // Product.HasForeignKey("ProductDefinitionId")
+                .IsRequired()                                 // FK is required because a Product must be associated with a ProductDefinition.
+                .OnDelete(DeleteBehavior.Restrict);           // Restrict deletion of a ProductDefinition if it has associated Products.
 
-            // Product -> OrderDetails
+            // Product -> OrderDetails (Many-to-One)
             // A product may not have been sold yet, so its OrderDetails relationship is optional.
             builder
-                .HasOne(product => product.OrderDetails)
-                .WithMany(details => details.Products)
-                .IsRequired(false)
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasOne(product => product.OrderDetails) // Product.HasOne(OrderDetails)
+                .WithMany(details => details.Products)   // OrderDetails.HasMany(Product)
+                .HasForeignKey("OrderDetailsId")         // Product.HasForeignKey("OrderDetailsId").IsOptional()
+                .IsRequired(false)                       // FK is optional because a Product may not be associated with an OrderDetails yet.
+                .OnDelete(DeleteBehavior.Restrict);      // Restrict deletion of an OrderDetails if it has associated Products.
 
             #endregion
         }

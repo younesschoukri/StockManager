@@ -66,30 +66,30 @@ namespace StockManager.Infrastructure.Persistence.Configurations
 
             // Order -> Customer (Many-to-One)
             // Customer can have many Orders, but an Order must have one Customer.
-            // Deleting a Customer will not delete their Orders (Restrict).
             builder
-                .HasOne(order => order.Customer)
-                .WithMany(customer => customer.Orders)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasOne(order => order.Customer)       // Order.HasOne(Customer)
+                .WithMany(customer => customer.Orders) // Customer.WithMany(Orders)
+                .HasForeignKey("CustomerId")           // Order.HasForeignKey("CustomerId").IsRequired()
+                .IsRequired()                          // FK is required because an Order must be associated with a Customer.
+                .OnDelete(DeleteBehavior.Restrict);    // Restrict deletion of Customer if it has associated Orders.
 
             // Order -> OrderDetails (One-to-Many)
             // An order can have many OrderDetails, but an OrderDetail must belong to one Order.
-            // Deleting an Order will not delete its OrderDetails (Restrict).
             builder
-                .HasMany(order => order.OrderDetails)
-                .WithOne(orderDetails => orderDetails.Order)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasMany(order => order.OrderDetails)        // Order.HasMany(OrderDetails)
+                .WithOne(orderDetails => orderDetails.Order) // OrderDetails.WithOne(Order)
+                .HasForeignKey("OrderId")                    // OrderDetails.HasForeignKey("OrderId").IsRequired()
+                .IsRequired()                                // FK is required because an OrderDetail must be associated with an Order.
+                .OnDelete(DeleteBehavior.Restrict);          // Restrict deletion of an Order if it has associated OrderDetails.
 
             // Order -> Deposits (One-to-Many)
             // An order can have many Deposits, but a Deposit must belong to one Order.
-            // Deleting an Order will not delete its Deposits (Restrict).
             builder
-                .HasMany(order => order.Deposits)
-                .WithOne(deposit => deposit.Order)
-                .IsRequired(false)
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasMany(order => order.Deposits)   // Order.HasMany(Deposits)
+                .WithOne(deposit => deposit.Order)  // Deposit.WithOne(Order)
+                .HasForeignKey("OrderId")           // Deposit.HasForeignKey("OrderId").IsRequired()
+                .IsRequired()                       // FK is required because a Deposit must be associated with an Order.
+                .OnDelete(DeleteBehavior.Restrict); // Restrict deletion of an Order if it has associated Deposits.
 
             #endregion
         }

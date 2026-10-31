@@ -42,21 +42,23 @@ namespace StockManager.Infrastructure.Persistence.Configurations
 
             #region Relationships
 
-            // OrderDetails -> Order
+            // OrderDetails -> Order (Many-to-One)
             // An order can have many detail records, but each detail record belongs to one order.
             builder
-                .HasOne(orderDetails => orderDetails.Order)
-                .WithMany(order => order.OrderDetails)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasOne(orderDetails => orderDetails.Order) // OrderDetails.HasOne(Order)
+                .WithMany(order => order.OrderDetails)      // Order.HasMany(OrderDetails)
+                .HasForeignKey("OrderId")                   // OrderDetails.HasForeignKey("OrderId").IsRequired()
+                .IsRequired()                               // FK is required because an OrderDetails must be associated with an Order.
+                .OnDelete(DeleteBehavior.Restrict);         // Restrict deletion of an Order if it has associated OrderDetails.
 
-            // OrderDetails -> Products
+            // OrderDetails -> Products (One-to-Many)
             // An order detail can contain multiple products, a product may belong to zero or one order detail.
             builder
-                .HasMany(details => details.Products)
-                .WithOne(product => product.OrderDetails)
-                .IsRequired(false)
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasMany(details => details.Products)     // OrderDetails.HasMany(Products)
+                .WithOne(product => product.OrderDetails) // Product.HasOne(OrderDetails)
+                .HasForeignKey("OrderDetailsId")          // Product.HasForeignKey("OrderDetailsId").IsOptional()
+                .IsRequired(false)                        // FK is optional because a product can exist without being associated with an OrderDetails, simply because it hasn't been purchased yet.
+                .OnDelete(DeleteBehavior.Restrict);       // Restrict deletion of an OrderDetails if it has associated Products.
 
             #endregion
         }

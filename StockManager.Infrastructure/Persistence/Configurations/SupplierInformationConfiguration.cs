@@ -54,10 +54,11 @@ namespace StockManager.Infrastructure.Persistence.Configurations
             // SupplierInformation -> Supplier (Many-to-One)
             // A supplier can have multiple information records, a supplier information record must belong to exactly one supplier.
             builder
-                .HasOne(supplierInformation => supplierInformation.Supplier)
-                .WithMany(supplier => supplier.Information)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasOne(supplierInformation => supplierInformation.Supplier) // SupplierInformation.HasOne(Supplier)
+                .WithMany(supplier => supplier.Information)                  // Supplier.HasMany(SupplierInformation)
+                .HasForeignKey("SupplierId")                                 // SupplierInformation.HasForeignKey("SupplierId")
+                .IsRequired()                                                // FK is required because a SupplierInformation must be associated with a Supplier.
+                .OnDelete(DeleteBehavior.Restrict);                          // Restrict deletion of a Supplier if it has associated SupplierInformation.
 
             #endregion
         }

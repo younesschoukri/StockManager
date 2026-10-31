@@ -1,6 +1,5 @@
 ﻿using StockManager.Domain.Interfaces;
 using StockManager.Infrastructure.Persistence;
-using StockManager.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

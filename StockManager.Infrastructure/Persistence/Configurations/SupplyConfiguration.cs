@@ -83,26 +83,29 @@ namespace StockManager.Infrastructure.Persistence.Configurations
             // Supply -> Supplier (Many-to-One)
             // A supplier can have multiple supplies, a supply must belong to exactly one supplier.
             builder
-                .HasOne(supply => supply.Supplier)
-                .WithMany(supplier => supplier.Supplies)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasOne(supply => supply.Supplier)       // Supply.HasOne(Supplier)
+                .WithMany(supplier => supplier.Supplies) // Suppliers.HasMany(Supplies)
+                .HasForeignKey("SupplierId")             // Supply.HasForeignKey("SupplierId").IsRequired()
+                .IsRequired()                            // FK is required because a Supply must be associated with a Supplier.
+                .OnDelete(DeleteBehavior.Restrict);      // Restrict deletion of a Supplier if it has associated Supplies.
 
-            // Supply -> Product (Many-to-One)
+            // Supply -> Product (One-to-Many)
             // A supply can contain multiple physical products, a product must belong to one supply.
             builder
-                .HasMany(supply => supply.Products)
-                .WithOne(product => product.Supply)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasMany(supply => supply.Products) // Supply.HasMany(Products)
+                .WithOne(product => product.Supply) // Product.HasOne(Supply)
+                .HasForeignKey("SupplyId")          // Product.HasForeignKey("SupplyId").IsRequired()
+                .IsRequired()                       // FK is required because a Product must be associated with a Supply.
+                .OnDelete(DeleteBehavior.Restrict); // Restrict deletion of a Supply if it has associated Products.
 
-            // Supply -> CompanyBankChecks (Many-to-One)
+            // Supply -> CompanyBankChecks (One-to-Many)
             // A supply can have zero or multiple checks, a company check must belong to one supply.
             builder
-                .HasMany(supply => supply.CompanyBankChecks)
-                .WithOne(check => check.Supply)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasMany(supply => supply.CompanyBankChecks) // Supply.HasMany(CompanyBankChecks)
+                .WithOne(check => check.Supply)              // CompanyBankCheck.HasOne(Supply)
+                .HasForeignKey("SupplyId")                   // CompanyBankCheck.HasForeignKey("SupplyId")
+                .IsRequired()                                // FK is required because a CompanyBankCheck must be associated with a supply.
+                .OnDelete(DeleteBehavior.Restrict);          // Restrict deletion of a Supply if it has associated CompanyBankChecks.
 
             // Supply -> ProductDefinition (Many-to-Many)
             // A supply can contain multiple product definitions, a product definition can appear in multiple supplies.

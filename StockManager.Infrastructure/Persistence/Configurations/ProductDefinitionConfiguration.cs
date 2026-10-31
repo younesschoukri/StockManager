@@ -112,26 +112,29 @@ namespace StockManager.Infrastructure.Persistence.Configurations
             // ProductDefinition -> Products (One-to-Many)
             // A product definition can describe multiple physical products, a product can belong to only one product definition.
             builder
-                .HasMany(definition => definition.Products)
-                .WithOne(product => product.ProductDefinition)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasMany(definition => definition.Products)    // ProductDefinition.HasMany(Products)
+                .WithOne(product => product.ProductDefinition) // Product.HasOne(ProductDefinition)
+                .HasForeignKey("ProductDefinitionId")          // Product.HasForeignKey("ProductDefinitionId).IsRequired()
+                .IsRequired()                                  // FK is required because a Product must be associated it a ProductDefinition.
+                .OnDelete(DeleteBehavior.Restrict);            // Restrict deletion of a ProductDefinition if it has associated Products.
 
             // ProductDefinition -> Specifications (One-to-Many)
             // A product definition may or may not have multiple specifications, a specification can belong to only one product definition.
             builder
-                .HasMany(definition => definition.Specifications)
-                .WithOne(specification => specification.ProductDefinition)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasMany(definition => definition.Specifications)           // ProductDefinition.HasMany(ProductSpecifications)
+                .WithOne(specification => specification.ProductDefinition)  // ProductSpecification.HasOne(ProductDefinition)
+                .HasForeignKey("ProductDefinitionId")                       // ProductSpecification.HasForeignKey("ProductDefinitionId).IsRequired()
+                .IsRequired()                                               // FK is required because a ProductSpecification must be associated it a ProductDefinition.
+                .OnDelete(DeleteBehavior.Restrict);                         // Restrict deletion of a ProductDefinition if it has associated ProductSpecifications.
 
             // ProductDefinition -> SubCategory (Many-to-One)
             // A product definition must belong to exactly one subcategory, a subcategory can have multiple product definitions.
             builder
-                .HasOne(definition => definition.SubCategory)
-                .WithMany(subCategory => subCategory.ProductDefinitions)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
+                .HasOne(definition => definition.SubCategory)            // ProductDefinition.HasOne(SubCategory)
+                .WithMany(subCategory => subCategory.ProductDefinitions) // SubCategory.HasMany(ProductDefinition)
+                .HasForeignKey("SubCategoryId")                          // ProductDefinition.HasForeignKey("SubCategoryId).IsRequired()
+                .IsRequired()                                            // FK is required because a ProductDefinition must be associated it a SubCategory.
+                .OnDelete(DeleteBehavior.Restrict);                      // Restrict deletion of a SubCategory if it has associated ProductDefinitions.
 
             // ProductDefinition -> Supply (Many-to-Many)
             // A product definition can appear in multiple supplies.

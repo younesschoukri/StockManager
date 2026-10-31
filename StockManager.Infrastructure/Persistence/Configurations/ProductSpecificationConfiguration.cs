@@ -50,12 +50,14 @@ namespace StockManager.Infrastructure.Persistence.Configurations
 
             #region Relationship
 
-            // specifications -> ProductDefinition
+            // specifications -> ProductDefinition (Many-to-One)
             // A ProductDefinition can have multiple specifications, a ProductSpecification must belong to one ProductDefinition.
-            builder.HasOne(specification => specification.ProductDefinition)
-                .WithMany(definition => definition.Specifications)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Restrict);
+            builder
+                .HasOne(specification => specification.ProductDefinition) // ProductSpecification.HasOne(ProductDefinition)
+                .WithMany(definition => definition.Specifications)        // ProductDefinition.HasMany(ProductSpecifications)
+                .HasForeignKey("ProductdefinitionId")                     // ProductSpecification.HasForeignKey("ProductDefinitionId).IsRequired()
+                .IsRequired()                                             // FK is required because a ProductSpecification must be associated it a ProductDefinition.
+                .OnDelete(DeleteBehavior.Restrict);                       // Restrict deletion of a ProductDefinition if it has associated ProductSpecifications.
 
             #endregion
         }
