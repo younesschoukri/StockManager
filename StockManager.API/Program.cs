@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using StockManager.Infrastructure;
 using StockManager.Infrastructure.Persistence;
 
 namespace StockManager.API
@@ -11,9 +12,7 @@ namespace StockManager.API
 
             // Add services to the container.
 
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
-            builder.Services.AddDbContext<StockManagerDbContext>(options => options.UseSqlServer(connectionString));
+            builder.Services.AddInfrastructure(builder.Configuration);
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
